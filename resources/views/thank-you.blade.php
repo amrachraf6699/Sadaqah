@@ -15,7 +15,7 @@
                             </div>
                         </div>
                     </div>
-                    <h1 class="text-2xl font-bold text-center mb-4">Thank You for Your Donation!</h1>
+                    <h1 class="text-2xl font-bold text-center mb-4">Thank You for Your Donation! for</h1>
                     <p class="text-gray-700 text-center mb-6">We appreciate your generosity and support.</p>
                     <div class="flex justify-center">
                         <a href="{{ route('home') }}" class="bg-green-500 text-white font-semibold py-2 px-4 rounded shadow hover:bg-green-600 transition duration-300 ease-in-out">

@@ -25,8 +25,7 @@ class CampaignsController extends Controller
     {
         $campaign->load('user');
         $topContributors = $campaign->donations()->orderByDesc('amount')->take(4)->get();
-        $payment_methods = PaymentMethod::active()->get();
-        return view('campaigns.show', compact('campaign','topContributors','payment_methods'));
+        return view('campaigns.show', compact('campaign','topContributors'));
     }
 
 }

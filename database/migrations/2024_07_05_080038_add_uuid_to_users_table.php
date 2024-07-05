@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\PaymentMethod;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('donations', function (Blueprint $table) {
-            $table->foreignIdFor(PaymentMethod::class)->constrained()->cascadeOnDelete();
+        Schema::table('users', function (Blueprint $table) {
+            $table->uuid('uuid')->unique()->after('id');
         });
     }
 
@@ -22,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('donations', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
         });
     }

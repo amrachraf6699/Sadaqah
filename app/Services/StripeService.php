@@ -18,6 +18,7 @@ class StripeService
 
     public function createCheckoutSession($campaign, $amount, $message)
     {
+
         $session = $this->stripe->checkout->sessions->create([
             'payment_method_types' => ['card'],
             'line_items' => [
@@ -33,8 +34,8 @@ class StripeService
                 ],
             ],
             'mode' => 'payment',
-            'success_url' => 'http://localhost:8000/stripe/success?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => route('payment.cancel'),
+            'success_url' => route('user.stripe.success').'?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('user.payment.cancel'),
             'metadata' => [
                 'campaign_id' => $campaign->id,
                 'message' => $message ?? '',
@@ -67,31 +68,3 @@ class StripeService
         }
     }
 }
-
-
-// Stripe::setApiKey(config('services.stripe.secret'));
-
-//             $session = Session::create([
-//                 'payment_method_types' => ['card'],
-//                 'line_items' => [
-//                     [
-//                         'price_data' => [
-//                             'currency' => 'usd',
-//                             'product_data' => [
-//                                 'name' => 'Donate to ' . $campaign->title,
-//                             ],
-//                             'unit_amount' => $data['amount'] * 100,
-//                         ],
-//                         'quantity' => 1,
-//                     ],
-//                 ],
-//                 'mode' => 'payment',
-//                 'success_url' => 'http://localhost:8000/donate/success?session_id={CHECKOUT_SESSION_ID}',
-//                 'cancel_url' => route('donate.cancel'),
-//                 'metadata' => [
-//                     'campaign_id' => $campaign->id,
-//                     'message' => $data['message'] ?? '',
-//                 ],
-//             ]);
-
-//             return redirect($session->url, 303);

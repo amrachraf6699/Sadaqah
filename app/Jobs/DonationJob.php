@@ -53,7 +53,6 @@ class DonationJob implements ShouldQueue
                 'user_id' => $this->user->id,
                 'campaign_id' => $this->campaign->id,
                 'amount' => $amount,
-                'payment_method_id' => 1,
                 'message' => $message,
             ]);
 

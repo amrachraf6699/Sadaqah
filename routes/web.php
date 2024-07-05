@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{CampaignsController,HomeController, PaymentController};
+use App\Http\Controllers\{CampaignsController,HomeController, PaymentController, ProfileController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,13 +18,6 @@ Route::get('/', HomeController::class)->name('home');
 Route::get('campaigns',[CampaignsController::class,'index'])->name('campaigns.index');
 Route::get('campaign/{campaign:slug}',[CampaignsController::class,'show'])->name('campaigns.show');
 
-
-//Payment Routes
-Route::post('campaign/{campaign:slug}/donate',[PaymentController::class,'donate'])->name('campaigns.donate');
-Route::get('stripe/success', [PaymentController::class, 'handleStripeSuccess'])->name('stripe.success');
-Route::get('paypal/success', [PaymentController::class, 'handlePaypalSuccess'])->name('paypal.success');
-Route::get('payment/cancel', [PaymentController::class, 'handleCancel'])->name('payment.cancel');
-
-
+Route::get('profile/{user:uuid}',ProfileController::class)->name('profile.show');
 //Thank you page
 Route::view('thank-you', 'thank-you')->name('thank-you');
