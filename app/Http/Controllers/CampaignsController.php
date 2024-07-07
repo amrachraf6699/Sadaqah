@@ -15,6 +15,7 @@ class CampaignsController extends Controller
     public function index()
     {
         $campaigns = Campaign::where('user_id', '!=', auth()->id())
+        ->active()
         ->with('user')
         ->paginate(8);
 

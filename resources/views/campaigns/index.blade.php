@@ -5,13 +5,15 @@
     <div class="max-w-screen-xl mx-auto">
         <div class="flex flex-col sm:flex-row justify-center sm:justify-between items-center">
             <h3 class="leading-none font-black text-3xl underline underline-offset-4 mb-4 sm:mb-0 text-center sm:text-left">Our Campaigns</h3>
-            @auth
-                <a>
+        @auth
+            @can('create', App\Models\Campaign::class)
+                <a href="{{ route('campaigns.create') }}">
                     <button class="border border-transparent rounded-full font-semibold tracking-wide text-lg md:text-sm px-5 py-3 md:py-2 focus:outline-none focus:shadow-outline bg-indigo-600 text-gray-100 hover:bg-indigo-800 hover:text-gray-200 transition-all duration-300 ease-in-out w-full sm:w-auto">
                         Create Campaign
                     </button>
                 </a>
-            @endauth
+            @endcan
+        @endauth
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6 lg:mt-8">
             @if ($campaigns->isEmpty())
@@ -24,7 +26,7 @@
                 <div class="w-full h-48 bg-cover rounded-t-lg" style='background-image: url("{{ asset($campaign->image) }}");'></div>
                 <div class="flex-1 p-6 flex flex-col justify-end">
                     <div class="flex items-center mb-4">
-                        <img src="{{ $campaign->user->profile_picture ? url('images/'.$campaign->user->profile_picture) : url('default.jpg') }}" alt="{{ $campaign->user->name }}" class="w-10 h-10 rounded-full mr-4">
+                        <img src="{{ $campaign->user->profile_picture ? url($campaign->user->profile_picture) : url('default.jpg') }}" alt="{{ $campaign->user->name }}" class="w-10 h-10 rounded-full mr-4">
                         <div>
                             <div class="text-lg font-bold">{{ $campaign->title }}</div>
                             <div class="mt-3 text-gray-900 text-xs">By: {{ $campaign->user->name }}</div>

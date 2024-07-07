@@ -53,14 +53,14 @@
               @auth
                 <a class="transition-all duration-100 ease-in-out pb-1 border-b-2 {{ auth()->user()->balance > 0 ? 'text-green-400' : 'text-red-400' }} border-transparent hover:border-indigo-300
                 hover:text-indigo-600 md:mr-8 text-lg md:text-sm font-bold tracking-wide my-4 md:my-0">
-                    <img src="{{ auth()->user()->profile_picture ? url('images/'.auth()->user()->profile_picture) : url('default.jpg') }}" class="w-8 h-8 rounded-full inline-block mr-2">
+                    <img src="{{ auth()->user()->profile_picture ? url(auth()->user()->profile_picture) : url('default.jpg') }}" class="w-8 h-8 rounded-full inline-block mr-2">
                     {{ auth()->user()->balance }} $
                 </a>
-                <a href="#" class="transition-all duration-100 ease-in-out pb-1 border-b-2 text-indigo-500 border-transparent hover:border-indigo-300
+                <a href="{{ route('user.profile') }}" class="transition-all duration-100 ease-in-out pb-1 border-b-2 text-indigo-500 border-transparent hover:border-indigo-300
                 hover:text-indigo-600 md:mr-8 text-lg md:text-sm font-bold tracking-wide my-4 md:my-0">
                     Profile
                 </a>
-                <a href="#" class="transition-all duration-100 ease-in-out pb-1 px-4 border-2 border-indigo-500 text-indigo-500 hover:border-indigo-300
+                <a href="{{ route('user.profile',['#campaigns']) }}" class="transition-all duration-100 ease-in-out pb-1 px-4 border-2 border-indigo-500 text-indigo-500 hover:border-indigo-300
                 hover:text-indigo-600 md:mr-8 text-lg md:text-sm font-bold tracking-wide my-4 md:my-0 rounded-full">
                 My Campaigns
                 </a>

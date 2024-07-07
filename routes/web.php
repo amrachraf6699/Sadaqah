@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{CampaignsController,HomeController, PaymentController, ProfileController};
+use App\Http\Controllers\{CampaignsController,HomeController, PaymentController, ProfileController, ThankYouController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +18,18 @@ Route::get('/', HomeController::class)->name('home');
 Route::get('campaigns',[CampaignsController::class,'index'])->name('campaigns.index');
 Route::get('campaign/{campaign:slug}',[CampaignsController::class,'show'])->name('campaigns.show');
 
-Route::get('profile/{user:uuid}',ProfileController::class)->name('profile.show');
+Route::get('profile/{user:uuid}',ProfileController::class)->name('profile.show')->middleware('auth');
 //Thank you page
-Route::view('thank-you', 'thank-you')->name('thank-you');
+Route::get('thank-you', ThankYouController::class)->name('thank-you');
+
+Route::get('test-pdf',function(){
+    $amount = 1000;
+    $campaign = \App\Models\Campaign::with([
+        'user',
+        'donations' => function($query) {
+            $query->latest()
+                ->limit(1);
+        }
+    ])->findOrFail(25);
+    return view('pdf.thanks',compact('amount','campaign'));
+});

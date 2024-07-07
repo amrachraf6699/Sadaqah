@@ -23,6 +23,10 @@
                         </a>
                     </div>
                 </div>
+                <ul class="text-center space-x-4 mt-2">
+                    <a href="{{ route('user.download.invoice',['campaign'=>$campaign,'amount'=>$amount]) }}" class="text-sm text-gray-700 hover:text-blue-500">Download Invoice</a>
+                    <a href="{{ route('user.download.thanks',['campaign'=>$campaign,'amount'=>$amount]) }}" class="text-sm text-gray-700 hover:text-blue-500">Download Thanking</a>
+                </ul>
             </div>
         </div>
     </div>

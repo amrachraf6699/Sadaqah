@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Campaign extends Model
@@ -15,6 +16,11 @@ class Campaign extends Model
         'start_date' => 'datetime',
         'end_date' => 'datetime',
     ];
+
+    public function scopeActive(Builder $query)
+    {
+        $query->where('end_date', '>=', now());
+    }
 
     public function user()
     {

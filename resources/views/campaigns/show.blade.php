@@ -43,10 +43,9 @@
                     <!-- Donation Form -->
                     @auth
                     @if ($campaign->user_id == auth()->id())
-
                     <div class="bg-gray-100 p-6 rounded-lg shadow-md max-w-sm mx-auto mt-3">
                         <p class="text-center text-gray-600">You can't donate to your own campaign.</p>
-                        <a href="#" class="block text-center text-blue-500 mt-2">Manage My campaigns</a>
+                        <a href="{{ route('user.profile' , ['#campaigns']) }}" class="block text-center text-blue-500 mt-2">Manage My campaigns</a>
                     </div>
                     @else
                     <form action="{{ route('user.donate',['campaign'=>$campaign->slug]) }}" method="POST" class="bg-gray-100 p-6 rounded-lg shadow-md max-w-sm mx-auto mt-3">
@@ -98,7 +97,7 @@
                                 @foreach($topContributors as $contributor)
                                 <li class="flex items-center space-x-4">
                                     <a href="{{ route('profile.show', ['user' => $contributor->user->uuid]) }}" class="flex items-center space-x-4 w-full">
-                                        <img src="{{ $contributor->user->profile_picture ? url('images/'.$contributor->user->profile_picture) : url('default.jpg') }}" alt="{{ $contributor->user->name }}" class="w-12 h-12 rounded-full">
+                                        <img src="{{ $contributor->user->profile_picture ? url($contributor->user->profile_picture) : url('default.jpg') }}" alt="{{ $contributor->user->name }}" class="w-12 h-12 rounded-full">
                                         <div>
                                             <p class="text-lg font-semibold">{{ $contributor->user->name }}</p>
                                             <p class="text-gray-600">${{ number_format($contributor->amount, 2) }}</p>
@@ -117,7 +116,7 @@
                         <div class="bg-white shadow-lg rounded-lg p-6 border border-gray-200">
                             <h2 class="text-xl font-bold mb-4">Campaign Creator</h2>
                             <div class="flex items-center space-x-4">
-                                <img src="{{ $campaign->user->profile_picture ? url('images/'.$campaign->user->profile_picture) : url('default.jpg') }}" alt="{{ $campaign->user->name }}" class="w-16 h-16 rounded-full border-2 border-gray-300">
+                                <img src="{{ $campaign->user->profile_picture ? url($campaign->user->profile_picture) : url('default.jpg') }}" alt="{{ $campaign->user->name }}" class="w-16 h-16 rounded-full border-2 border-gray-300">
                                 <div>
                                     <p class="text-lg font-semibold">{{ $campaign->user->name }}</p>
                                     <p class="text-gray-600">{{ $campaign->user->email }}</p>

@@ -5,7 +5,7 @@
 <div class="container mx-auto px-4">
     <!-- Profile Card -->
     <div class="bg-white rounded-lg shadow-lg p-4 mt-4 flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
-        <img src="{{ $user->profile_picture ? url('images/'.$user->profile_picture) : url('default.jpg') }}" alt="{{ $user->name }}" class="w-24 h-24 rounded-full">
+        <img src="{{ $user->profile_picture ? url($user->profile_picture) : url('default.jpg') }}" alt="{{ $user->name }}" class="w-24 h-24 rounded-full">
         <div class="text-center md:text-left pt-4">
             <h2 class="text-2xl font-bold">{{ $user->name }}</h2>
             <p class="text-gray-600"><i class='bx bx-envelope'></i> {{ $user->email }}</p>

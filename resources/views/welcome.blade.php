@@ -85,7 +85,7 @@
                         <div class="w-full h-48 bg-cover rounded-t-lg" style='background-image: url("{{ asset($campaign->image) }}");'></div>
                         <div class="flex-1 p-6 flex flex-col justify-end">
                             <div class="flex items-center mb-4">
-                                <img src="{{ $campaign->user->profile_picture ? url('images/'.$campaign->user->profile_picture) : url('default.jpg') }}" alt="{{ $campaign->user->name }}" class="w-10 h-10 rounded-full mr-4">
+                                <img src="{{ $campaign->user->profile_picture ? url($campaign->user->profile_picture) : url('default.jpg') }}" alt="{{ $campaign->user->name }}" class="w-10 h-10 rounded-full mr-4">
                                 <div>
                                     <div class="text-lg font-bold">{{ $campaign->title }}</div>
                                     <div class="mt-3 text-gray-900 text-xs">By: {{ $campaign->user->name }}</div>

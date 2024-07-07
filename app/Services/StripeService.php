@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Jobs\DonationJob;
+use App\Models\Campaign;
 use Stripe\StripeClient;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
@@ -61,7 +62,12 @@ class StripeService
 
             DonationJob::dispatch($session, $user);
 
-            return redirect(route('thank-you'));
+            $campaign  = Campaign::findOrFail($session->metadata->campaign_id);
+
+            // session()->put('amount', $session->amount_total / 100);
+            // session()->put('campaign', $campaign);
+
+            return redirect(route('thank-you',['campaign' => $campaign, 'amount' => $session->amount_total / 100]));
 
         } catch (\Exception $e) {
             return redirect('/')->withErrors('An error occurred: ' . $e->getMessage());

@@ -6,6 +6,7 @@ use App\Models\User;
 
 class ProfileController extends Controller
 {
+
     /**
      * Handle the incoming request.
      */
@@ -13,7 +14,7 @@ class ProfileController extends Controller
     {
 
         if ($user->id === auth()->user()->id) {
-            return redirect()->route('user.profile')->withErrors('You are not allowed to view your own profile');
+            return redirect()->route('user.profile');
         }
 
         $user->load([
@@ -22,4 +23,5 @@ class ProfileController extends Controller
         ]);
         return view('profile.show', compact('user'));
     }
+
 }
