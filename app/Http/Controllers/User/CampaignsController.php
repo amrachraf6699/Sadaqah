@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCampaignRequest;
 use App\Http\Requests\UpdateCampaignRequest;
 use App\Models\Campaign;
+use App\Traits\UploadImage;
 use Illuminate\Support\Str;
 
 class CampaignsController extends Controller
 {
-
+    use UploadImage;
+    
     public function storeCampaign(CreateCampaignRequest $request)
     {
         $data = [

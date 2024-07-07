@@ -45,46 +45,60 @@
                 <path d="M18 6L6 18M6 6l12 12"/>
               </svg>
             </button>
-            <div class="flex flex-col items-center justify-center md:block">
-              <a href="https://github.com/amrachraf6699/sadaqah" target="_blank" class="transition-all duration-100 ease-in-out pb-1 border-b-2 text-red-500 border-transparent hover:border-red-500
-              hover:text-gray-600 md:mr-8 text-lg md:text-sm font-bold tracking-wide my-4 md:my-0">
-              <i class='bx bx-heart'></i>
-              </a>
-              @auth
-                <a class="transition-all duration-100 ease-in-out pb-1 border-b-2 {{ auth()->user()->balance > 0 ? 'text-green-400' : 'text-red-400' }} border-transparent hover:border-indigo-300
-                hover:text-indigo-600 md:mr-8 text-lg md:text-sm font-bold tracking-wide my-4 md:my-0">
-                    <img src="{{ auth()->user()->profile_picture ? url(auth()->user()->profile_picture) : url('default.jpg') }}" class="w-8 h-8 rounded-full inline-block mr-2">
-                    {{ auth()->user()->balance }} $
+            <div class="flex flex-col md:flex-row items-center justify-center">
+                <a href="https://github.com/amrachraf6699/sadaqah" target="_blank" class="transition-all duration-100 ease-in-out pb-1 border-b-2 text-red-500 border-transparent hover:border-red-500 hover:text-gray-600 md:mr-8 text-lg md:text-sm font-bold tracking-wide my-4 md:my-0">
+                    <i class='bx bx-heart text-2xl'></i>
                 </a>
-                <a href="{{ route('user.profile') }}" class="transition-all duration-100 ease-in-out pb-1 border-b-2 text-indigo-500 border-transparent hover:border-indigo-300
-                hover:text-indigo-600 md:mr-8 text-lg md:text-sm font-bold tracking-wide my-4 md:my-0">
-                    Profile
-                </a>
-                <a href="{{ route('user.profile',['#campaigns']) }}" class="transition-all duration-100 ease-in-out pb-1 px-4 border-2 border-indigo-500 text-indigo-500 hover:border-indigo-300
-                hover:text-indigo-600 md:mr-8 text-lg md:text-sm font-bold tracking-wide my-4 md:my-0 rounded-full">
-                My Campaigns
-                </a>
-                <a href="{{ route('logout') }}">
-                <button class="border border-transparent rounded font-semibold tracking-wide text-lg md:text-sm px-5 py-3 md:py-2
-                focus:outline-none focus:shadow-outline bg-indigo-600 text-gray-100 hover:bg-indigo-800
-                hover:text-gray-200 transition-all duration-300 ease-in-out my-4 md:my-0 w-full md:w-auto">
-                  Logout
-                </button>
-                </a>
+                @auth
+                    <div class="flex flex-col md:flex-row items-center">
+                        <a class="transition-all duration-100 ease-in-out pb-1 border-b-2 {{ auth()->user()->balance > 0 ? 'text-green-400' : 'text-red-400' }} border-transparent hover:border-indigo-300 hover:text-indigo-600 md:mr-8 text-lg md:text-sm font-bold tracking-wide my-4 md:my-0">
+                            <img src="{{ auth()->user()->profile_picture ? url(auth()->user()->profile_picture) : url('default.jpg') }}" class="w-8 h-8 rounded-full inline-block mr-2">
+                            {{ auth()->user()->balance }} $
+                        </a>
+                        <a href="{{ route('user.profile') }}" class="transition-all duration-100 ease-in-out pb-1 border-b-2 text-indigo-500 border-transparent hover:border-indigo-300 hover:text-indigo-600 md:mr-8 text-lg md:text-sm font-bold tracking-wide my-4 md:my-0">
+                            Profile
+                        </a>
+                        <a href="{{ route('user.profile', ['#campaigns']) }}" class="transition-all duration-100 ease-in-out pb-1 px-4 border-2 border-indigo-500 text-indigo-500 hover:border-indigo-300 hover:text-indigo-600 md:mr-8 text-lg md:text-sm font-bold tracking-wide my-4 md:my-0 rounded-full">
+                            My Campaigns
+                        </a>
+                        <div class="relative" x-data="{ open: false }">
+                            <button @click="open = !open" class="transition-all duration-100 ease-in-out pb-1 border-b-2 text-indigo-500 border-transparent hover:border-indigo-300 hover:text-indigo-600 md:mr-8 text-lg md:text-sm font-bold tracking-wide my-4 md:my-0">
+                                <i class='bx bx-bell text-2xl'></i>
+                            </button>
+                            <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-20">
+                                <div class="py-2">
+                                    @foreach (auth()->user()->notifications->take(3) as $notification)
+                                        <a href="{{ route('user.notifications.show',['notification'=>$notification->id]) }}" class="block px-4 py-2 text-sm text-gray-800 {{ $notification->read_at ? '' : 'bg-gray-200' }} hover:bg-gray-300">
+                                            <div class="flex justify-between items-center">
+                                                <span>{{ Str::limit($notification->data['message'], 30) }}</span>
+                                                <span class="text-xs text-gray-500">{{ $notification->created_at->format('M-d h:i A') }}</span>
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                </div>
+                                <div class="border-t border-gray-200">
+                                    <a href="{{ route('user.notifications') }}" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 text-center">Show All Notifications</a>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{{ route('logout') }}" class="md:ml-auto">
+                            <button class="border border-transparent rounded-full font-semibold tracking-wide text-lg md:text-sm px-5 py-2 md:py-2 focus:outline-none focus:shadow-outline bg-indigo-600 text-gray-100 hover:bg-indigo-800 hover:text-gray-200 transition-all duration-300 ease-in-out my-4 md:my-0 w-full md:w-auto">
+                                Logout
+                            </button>
+                        </a>
+                    </div>
                 @else
-                <a href="{{ route('login') }}" class="transition-all duration-100 ease-in-out pb-1 border-b-2 text-indigo-500 border-transparent hover:border-indigo-300
-                hover:text-indigo-600 md:mr-8 text-lg md:text-sm font-bold tracking-wide my-4 md:my-0">
-                  Login
-                </a>
-                <a href="{{ route('register') }}">
-                <button class="border border-transparent rounded font-semibold tracking-wide text-lg md:text-sm px-5 py-3 md:py-2
-                focus:outline-none focus:shadow-outline bg-indigo-600 text-gray-100 hover:bg-indigo-800
-                hover:text-gray-200 transition-all duration-300 ease-in-out my-4 md:my-0 w-full md:w-auto">
-                  Sign Up
-                </button>
-                </a>
-              @endauth
+                    <a href="{{ route('login') }}" class="transition-all duration-100 ease-in-out pb-1 border-b-2 text-indigo-500 border-transparent hover:border-indigo-300 hover:text-indigo-600 md:mr-8 text-lg md:text-sm font-bold tracking-wide my-4 md:my-0">
+                        Login
+                    </a>
+                    <a href="{{ route('register') }}">
+                        <button class="border border-transparent rounded font-semibold tracking-wide text-lg md:text-sm px-5 py-3 md:py-2 focus:outline-none focus:shadow-outline bg-indigo-600 text-gray-100 hover:bg-indigo-800 hover:text-gray-200 transition-all duration-300 ease-in-out my-4 md:my-0 w-full md:w-auto">
+                            Sign Up
+                        </button>
+                    </a>
+                @endauth
             </div>
+
           </div>
         </div>
       </header>
@@ -150,6 +164,7 @@
       onClick: function(){}
     }).showToast();
   </script>
+
 @endif
 </html>
 
