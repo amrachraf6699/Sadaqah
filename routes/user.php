@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{PaymentController, PDFController};
+use App\Http\Controllers\User\CampaignsController;
 use App\Http\Controllers\User\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,5 +29,9 @@ Route::get('download/thanks', PDFController::class)->name('download.thanks');
 Route::view('edit','user.edit')->name('edit');
 Route::post('edit',[ProfileController::class, 'update'])->name('update');
 
-Route::get('campaign/{campaign:slug}/edit',[ProfileController::class, 'editCampaign'])->name('campaign.edit');
-Route::put('campaign/{campaign:slug}/update',[ProfileController::class, 'updateCampaign'])->name('campaign.update');
+//Campaign Routes
+Route::view('campaign/create','user.campaign.create')->name('campaign.create');
+Route::post('campaign/create',[CampaignsController::class, 'storeCampaign'])->name('campaign.store');
+Route::get('campaign/{campaign:slug}/edit',[CampaignsController::class, 'editCampaign'])->name('campaign.edit');
+Route::put('campaign/{campaign:slug}/update',[CampaignsController::class, 'updateCampaign'])->name('campaign.update');
+Route::delete('campaign/{campaign:slug}/delete',[CampaignsController::class, 'deleteCampaign'])->name('campaign.delete');

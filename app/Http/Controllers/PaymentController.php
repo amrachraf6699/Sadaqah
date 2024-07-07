@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DonateRequest;
 use App\Models\Campaign;
 use App\Services\StripeService;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller

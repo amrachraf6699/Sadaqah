@@ -22,14 +22,3 @@ Route::get('profile/{user:uuid}',ProfileController::class)->name('profile.show')
 //Thank you page
 Route::get('thank-you', ThankYouController::class)->name('thank-you');
 
-Route::get('test-pdf',function(){
-    $amount = 1000;
-    $campaign = \App\Models\Campaign::with([
-        'user',
-        'donations' => function($query) {
-            $query->latest()
-                ->limit(1);
-        }
-    ])->findOrFail(25);
-    return view('pdf.thanks',compact('amount','campaign'));
-});

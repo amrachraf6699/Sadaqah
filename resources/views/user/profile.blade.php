@@ -23,7 +23,7 @@
                     Your Campaigns
                 </h2>
                 @can('create', App\Models\Campaign::class)
-                    <a href="{{ route('campaigns.create') }}">
+                    <a href="{{ route('user.campaign.create') }}">
                         <button class="border border-transparent rounded-full font-semibold tracking-wide text-lg md:text-sm px-5 py-3 md:py-2 focus:outline-none focus:shadow-outline bg-indigo-600 text-gray-100 hover:bg-indigo-800 hover:text-gray-200 transition-all duration-300 ease-in-out w-full sm:w-auto">
                             Create Campaign
                         </button>
@@ -64,12 +64,19 @@
                             </div>
                             <!-- Edit button -->
                             <div class="p-4 border-t border-gray-200 bg-gray-50 flex justify-center space-x-4">
-                                <a href="{{ route('user.campaign.edit',['campaign'=>$campaign->slug]) }}" class="bg-blue-500 text-white rounded-full p-2 shadow-md hover:bg-gray-500 transition-colors duration-300 flex items-center justify-center w-10 h-10">
+                                <a href="{{ route('user.campaign.edit',['campaign'=>$campaign->slug]) }}" class="bg-blue-500 text-white rounded-full p-2 shadow-md hover:bg-blue-700 transition-colors duration-300 flex items-center justify-center w-10 h-10">
                                     <i class='bx bx-pencil text-xl'></i>
                                 </a>
-                                <a href="{{ route('campaigns.show', $campaign->slug) }}" class="bg-gray-500 text-white rounded-full p-2 shadow-md hover:bg-blue-500 transition-colors duration-300 flex items-center justify-center w-10 h-10">
+                                <a href="{{ route('campaigns.show', $campaign->slug) }}" class="bg-gray-500 text-white rounded-full p-2 shadow-md hover:bg-gray-700 transition-colors duration-300 flex items-center justify-center w-10 h-10">
                                     <i class='bx bx-show text-xl'></i>
                                 </a>
+                                <form method="POST" action="{{ route('user.campaign.delete',['campaign'=>$campaign->slug]) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 text-white rounded-full p-2 shadow-md hover:bg-red-700 transition-colors duration-300 flex items-center justify-center w-10 h-10">
+                                        <i class='bx bx-trash text-xl'></i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     @endforeach

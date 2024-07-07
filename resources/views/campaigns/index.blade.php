@@ -7,7 +7,7 @@
             <h3 class="leading-none font-black text-3xl underline underline-offset-4 mb-4 sm:mb-0 text-center sm:text-left">Our Campaigns</h3>
         @auth
             @can('create', App\Models\Campaign::class)
-                <a href="{{ route('campaigns.create') }}">
+                <a href="{{ route('user.campaign.create') }}">
                     <button class="border border-transparent rounded-full font-semibold tracking-wide text-lg md:text-sm px-5 py-3 md:py-2 focus:outline-none focus:shadow-outline bg-indigo-600 text-gray-100 hover:bg-indigo-800 hover:text-gray-200 transition-all duration-300 ease-in-out w-full sm:w-auto">
                         Create Campaign
                     </button>
