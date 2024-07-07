@@ -4,6 +4,7 @@ use App\Http\Controllers\{PaymentController, PDFController};
 use App\Http\Controllers\User\CampaignsController;
 use App\Http\Controllers\User\NotificationsController;
 use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\WithdrawController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,3 +43,8 @@ Route::delete('campaign/{campaign:slug}/delete',[CampaignsController::class, 'de
 //Notification Routes
 Route::get('notifications', [NotificationsController::class, 'index'])->name('notifications');
 Route::get('notifications/{notification:id}', [NotificationsController::class, 'show'])->name('notifications.show');
+
+
+//Withdrawing Routes
+Route::get('withdraw',[WithdrawController::class, 'create'])->name('withdraw.create');
+Route::post('withdraw',[WithdrawController::class, 'store'])->name('withdraw.store');

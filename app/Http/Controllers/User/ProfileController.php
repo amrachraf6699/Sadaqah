@@ -21,8 +21,9 @@ class ProfileController extends Controller
         $user->load('campaigns','donations');
 
         $donations = $user->donations()->paginate(9);
+        $withdraws = $user->withdraws()->paginate(9);
 
-        return view('user.profile',compact('user','donations'));
+        return view('user.profile',compact('user','donations','withdraws'));
     }
 
 
