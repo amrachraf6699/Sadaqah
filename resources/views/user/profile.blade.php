@@ -117,7 +117,7 @@
                                         <i class='bx bx-loader-alt text-2xl text-blue-500' title="Processing"></i>
                                         @break
                                     @case('paying')
-                                        <i class='bx bx-credit-card text-2xl text-green-500' title="Paying"></i>
+                                        <i class='bx bxs-truck text-2xl text-green-500' title="Paying"></i>
                                         @break
                                     @case('paid')
                                         <i class='bx bx-check text-2xl text-green-500' title="Paid"></i>
