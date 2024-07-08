@@ -32,7 +32,10 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'profile_picture' => null,
             'balance' => 0,
+<<<<<<< HEAD
             'is_admin' => false,
+=======
+>>>>>>> 19c6613efbfe72f829a26fc69f567b0ad7426e66
         ];
     }
 
@@ -52,6 +55,7 @@ class UserFactory extends Factory
             'balance' => rand(100, 1000),
         ]);
     }
+<<<<<<< HEAD
 
     public function admin(): static
     {
@@ -59,4 +63,6 @@ class UserFactory extends Factory
             'is_admin' => true,
         ]);
     }
+=======
+>>>>>>> 19c6613efbfe72f829a26fc69f567b0ad7426e66
 }

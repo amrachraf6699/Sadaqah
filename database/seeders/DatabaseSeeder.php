@@ -21,7 +21,11 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()->count(5)->create();
         User::factory()->count(25)->withBalance()->create();
+<<<<<<< HEAD
         User::factory()->count(3)->admin()->create();
+=======
+        Admin::factory()->count(5)->create();
+>>>>>>> 19c6613efbfe72f829a26fc69f567b0ad7426e66
         Campaign::factory()->count(25)->create();
         Campaign::factory()->count(75)->withAmount()->create();
         PaymentMethod::factory()->Stripe()->create();

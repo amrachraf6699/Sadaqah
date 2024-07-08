@@ -21,5 +21,3 @@ Route::get('campaign/{campaign:slug}',[CampaignsController::class,'show'])->name
 Route::get('profile/{user:uuid}',ProfileController::class)->name('profile.show')->middleware('auth');
 //Thank you page
 Route::get('thank-you', ThankYouController::class)->name('thank-you');
-
-// DDD
