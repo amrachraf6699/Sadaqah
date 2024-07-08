@@ -22,3 +22,4 @@ Route::get('profile/{user:uuid}',ProfileController::class)->name('profile.show')
 //Thank you page
 Route::get('thank-you', ThankYouController::class)->name('thank-you');
 
+// DDD
