@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -11,12 +12,14 @@ class WelcomeNotification extends Notification
 {
     use Queueable;
 
+    public $user;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(User $user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -26,7 +29,7 @@ class WelcomeNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['mail','database'];
     }
 
     /**
@@ -35,9 +38,8 @@ class WelcomeNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->subject('Welcome to our application!')
+            ->view('emails.welcome', ['user' => $this->user]);
     }
 
     /**
@@ -48,7 +50,8 @@ class WelcomeNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'message' => 'Welcome to our application!',
+            'details' => 'Hi '.$this->user->name.', we are glad to have you on board. Enjoy your stay!.'
         ];
     }
 }

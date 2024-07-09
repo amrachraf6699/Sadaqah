@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Jobs\RegisterJob;
 use App\Models\User;
+use App\Traits\UploadImage;
+use Illuminate\Support\Str;
+
 
 class AuthController extends Controller
 {
+    use UploadImage;
+
     public function login(AuthRequest $request)
     {
         if(auth()->attempt($request->only('email','password'),$request->filled('remember_me'))){
@@ -20,10 +27,20 @@ class AuthController extends Controller
         return back()->withErrors(['error'=>'Invalid Email or Password']);
     }
 
-    public function register(AuthRequest $request)
+    public function register(RegisterRequest $request)
     {
-        $user = User::create($request->only('name','email') + ['password'=>bcrypt($request->password)]);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'uuid' => Str::uuid(),
+            'profile_picture' => $request->hasFile('profile_picture') ? $this->uploadImage($request->profile_picture,'images/avatars') : null
+        ]);
+
+        RegisterJob::dispatch($user);
+
         auth()->login($user);
+
         return redirect()->route('home')->with('success','Welcome, '.$user->name);
     }
 
