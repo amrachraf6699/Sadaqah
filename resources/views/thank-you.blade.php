@@ -24,12 +24,7 @@
                     </div>
                 </div>
                 <ul class="text-center space-x-4 mt-2">
-<<<<<<< HEAD
                     <p class="text-sm text-gray-700">You can download the invoice and thanking letter from <a href="{{ route('user.profile',['#donation']) }}" class="underline text-indigo-400">here</a></p>
-=======
-                    <a href="{{ route('user.download.invoice',['campaign'=>$campaign,'amount'=>$amount]) }}" class="text-sm text-gray-700 hover:text-blue-500">Download Invoice</a>
-                    <a href="{{ route('user.download.thanks',['campaign'=>$campaign,'amount'=>$amount]) }}" class="text-sm text-gray-700 hover:text-blue-500">Download Thanking</a>
->>>>>>> 19c6613efbfe72f829a26fc69f567b0ad7426e66
                 </ul>
             </div>
         </div>

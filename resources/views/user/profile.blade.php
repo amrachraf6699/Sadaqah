@@ -146,11 +146,7 @@
 
 
     <!-- User's donations section -->
-<<<<<<< HEAD
     <div class="mt-8" id="donation">
-=======
-    <div class="mt-8">
->>>>>>> 19c6613efbfe72f829a26fc69f567b0ad7426e66
         <h2 class="text-3xl underline font-semibold mb-6 text-center">Your Donations</h2>
         @if($donations->isEmpty())
             <p class="text-gray-600">You have not made any donations yet.</p>

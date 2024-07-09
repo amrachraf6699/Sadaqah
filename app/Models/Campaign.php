@@ -17,6 +17,13 @@ class Campaign extends Model
         'end_date' => 'datetime',
     ];
 
+    public function getImageUrlAttribute()
+    {
+        return $this->image
+            ? asset($this->image)
+            : 'https://via.placeholder.com/300';
+    }
+    
     public function scopeActive(Builder $query)
     {
         $query->where('end_date', '>=', now());

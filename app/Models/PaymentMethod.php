@@ -11,6 +11,12 @@ class PaymentMethod extends Model
 
     protected $guarded = [];
 
+
+    public function getLogoAttribute($value)
+    {
+        return $value ? asset($value) : null;
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active',1);

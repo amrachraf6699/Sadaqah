@@ -49,6 +49,16 @@ class User extends Authenticatable implements FilamentUser
     ];
 
 
+    // User.php
+
+    public function getProfilePictureUrlAttribute()
+    {
+        return $this->profile_picture
+            ? asset($this->profile_picture)
+            : 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+    }
+
+
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->is_admin;
