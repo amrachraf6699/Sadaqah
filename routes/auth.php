@@ -19,6 +19,11 @@ Route::group(['prefix'=>'auth','middleware'=>'guest'],function(){
     Route::post('login',[AuthController::class,'login']);
     Route::view('register','auth.register')->name('register');
     Route::post('register',[AuthController::class,'register']);
+    Route::view('forgot', 'auth.forgot')->name('forgot');
+    Route::post('forgot', [AuthController::class, 'forgot']);
+    Route::get('reset/{token}', [AuthController::class, 'reset'])->name('reset');
+    Route::post('reset/{token}', [AuthController::class, 'updatePassword']);
+
 });
 
 Route::group(['prefix'=>'auth','middleware'=>'auth'],function(){

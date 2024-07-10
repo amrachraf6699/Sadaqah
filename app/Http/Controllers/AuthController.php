@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuthRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Jobs\RegisterJob;
+use App\Mail\ResetPasswordMail;
 use App\Models\User;
 use App\Traits\UploadImage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 
@@ -42,6 +46,61 @@ class AuthController extends Controller
         auth()->login($user);
 
         return redirect()->route('home')->with('success','Welcome, '.$user->name);
+    }
+
+    public function forgot(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $user = User::where('email',$request->email)->first();
+
+        if($user){
+
+            $token = Str::random(60);
+
+            DB::table('password_reset_tokens')->where('email',$request->email)->delete();
+
+            DB::table('password_reset_tokens')->insert([
+                'email' => $request->email,
+                'token' => $token,
+                'created_at' => now()
+            ]);
+
+            Mail::to($request->email)->send(new ResetPasswordMail($user->name,$token, $user->email));
+        }
+
+        return redirect()->route('login')->with('success','We have emailed your password reset link!');
+    }
+
+    public function reset(Request $request,$token)
+    {
+        return view('auth.reset')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'password' => 'required|confirmed'
+        ]);
+
+        $data = DB::table('password_reset_tokens')->where('token',$request->token)->first();
+
+        if(!$data){
+            return redirect()->route('login')->withErrors(['error'=>'Something went wrong while resetting your password']);
+        }
+
+        User::where('email',$data->email)->update([
+            'password' => bcrypt($request->password)
+        ]);
+
+        DB::table('password_reset_tokens')->where('token',$request->token)->delete();
+
+        return redirect()->route('login')->with('success','Password reset successfully');
     }
 
     public function logout()
