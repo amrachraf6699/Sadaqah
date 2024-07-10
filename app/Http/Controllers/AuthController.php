@@ -74,31 +74,24 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success','We have emailed your password reset link!');
     }
 
+
     public function reset(Request $request,$token)
     {
-        return view('auth.reset')->with(
-            ['token' => $token, 'email' => $request->email]
-        );
-    }
-
-    public function updatePassword(Request $request)
-    {
         $request->validate([
-            'token' => 'required',
             'password' => 'required|confirmed'
         ]);
 
-        $data = DB::table('password_reset_tokens')->where('token',$request->token)->first();
+        $data = DB::table('password_reset_tokens')->where('token',$token)->first();
 
         if(!$data){
             return redirect()->route('login')->withErrors(['error'=>'Something went wrong while resetting your password']);
         }
 
-        User::where('email',$data->email)->update([
+        $user = User::where('email',$data->email)->update([
             'password' => bcrypt($request->password)
         ]);
 
-        DB::table('password_reset_tokens')->where('token',$request->token)->delete();
+        DB::table('password_reset_tokens')->where('token',$token)->delete();
 
         return redirect()->route('login')->with('success','Password reset successfully');
     }
@@ -106,6 +99,6 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-        return redirect()->intended()->with('success','Goodbye');
+        return redirect()->route('home')->with('success','Goodbye');
     }
 }

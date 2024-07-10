@@ -8,8 +8,6 @@
         <h2 class="text-3xl font-black text-center text-gray-800">Reset Password</h2>
         <form class="mt-8 space-y-6" action="" method="POST">
             @csrf
-            <input type="hidden" name="token" value="{{ $token }}">
-            <input type="hidden" name="email" value="{{ $email }}">
             <div class="rounded-md shadow-sm">
                 <div>
                     <label for="password" class="sr-only">New Password</label>

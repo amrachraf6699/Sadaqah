@@ -15,14 +15,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['prefix'=>'auth','middleware'=>'guest'],function(){
+    //Login Routes
     Route::view('login','auth.login')->name('login');
     Route::post('login',[AuthController::class,'login']);
+    //Register Routes
     Route::view('register','auth.register')->name('register');
     Route::post('register',[AuthController::class,'register']);
+    //Forgot Password Routes
     Route::view('forgot', 'auth.forgot')->name('forgot');
     Route::post('forgot', [AuthController::class, 'forgot']);
-    Route::get('reset/{token}', [AuthController::class, 'reset'])->name('reset');
-    Route::post('reset/{token}', [AuthController::class, 'updatePassword']);
+    //Reset Password Routes
+    Route::view('reset/{token}', 'auth.reset')->name('reset');
+    Route::post('reset/{token}', [AuthController::class, 'reset']);
 
 });
 
