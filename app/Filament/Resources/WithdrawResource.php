@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\DonationResource\Widgets\WithdrawWidget;
 use App\Filament\Resources\WithdrawResource\Pages;
 use App\Filament\Resources\WithdrawResource\RelationManagers;
 use App\Models\Withdraw;
@@ -84,6 +85,14 @@ class WithdrawResource extends Resource
     {
         return [
             //
+        ];
+    }
+
+
+    public static function getWidgets(): array
+    {
+        return [
+            WithdrawWidget::class,
         ];
     }
 

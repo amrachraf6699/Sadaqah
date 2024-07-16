@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\WithdrawResource\Pages;
 
+use App\Filament\Resources\DonationResource\Widgets\WithdrawWidget;
 use App\Filament\Resources\WithdrawResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
@@ -13,7 +14,13 @@ class ListWithdraws extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+        ];
+    }
+
+    public function getHeaderWidgets(): array
+    {
+        return [
+            WithdrawWidget::class,
         ];
     }
 }

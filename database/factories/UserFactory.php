@@ -33,6 +33,7 @@ class UserFactory extends Factory
             'profile_picture' => null,
             'balance' => 0,
             'is_admin' => false,
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 

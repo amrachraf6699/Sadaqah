@@ -21,6 +21,7 @@ class DonationFactory extends Factory
             'campaign_id' => $this->faker->numberBetween(1, 100),
             'amount' => $this->faker->randomFloat(2, 10, 1000),
             'message' => null,
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 

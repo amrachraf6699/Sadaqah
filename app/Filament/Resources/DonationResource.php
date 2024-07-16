@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DonationResource\Pages;
 use App\Filament\Resources\DonationResource\RelationManagers;
+use App\Filament\Resources\DonationResource\Widgets\DonationWidget;
 use App\Models\Donation;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -98,6 +99,13 @@ class DonationResource extends Resource
         ];
     }
 
+    public static function getWidgets(): array
+    {
+        return [
+            DonationWidget::class,
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
@@ -106,4 +114,5 @@ class DonationResource extends Resource
             'edit' => Pages\EditDonation::route('/{record}/edit'),
         ];
     }
+
 }

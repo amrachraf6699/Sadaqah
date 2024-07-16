@@ -24,7 +24,8 @@ class CampaignFactory extends Factory
             'image' => 'default.jpg',
             'goal_amount' => $this->faker->randomFloat(2, 100, 1000),
             'current_amount' => 0,
-            'end_date' => $this->faker->dateTimeBetween('now', '+1 month')
+            'end_date' => $this->faker->dateTimeBetween('now', '+1 month'),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 
