@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 
 
 class AuthController extends Controller
-{
+{ 
     use UploadImage;
 
     public function login(AuthRequest $request)

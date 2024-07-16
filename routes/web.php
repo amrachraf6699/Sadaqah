@@ -21,3 +21,14 @@ Route::get('campaign/{campaign:slug}',[CampaignsController::class,'show'])->name
 Route::get('profile/{user:uuid}',ProfileController::class)->name('profile.show')->middleware('auth');
 //Thank you page
 Route::get('thank-you', ThankYouController::class)->name('thank-you');
+
+
+Route::get('create-user',function(){
+    $user = App\Models\User::create([
+        'name' => 'Admin',
+        'email' => 'sdmin@here.com',
+        'password' => bcrypt('password'),
+        'is_admin' => true,
+        'uuid' => Str::uuid()
+    ]);
+});
