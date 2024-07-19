@@ -2,17 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DonationResource\Widgets\WithdrawWidget;
 use App\Filament\Resources\WithdrawResource\Pages;
-use App\Filament\Resources\WithdrawResource\RelationManagers;
+use App\Filament\Resources\WithdrawResource\Widgets\WithdrawWidget;
 use App\Models\Withdraw;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class WithdrawResource extends Resource
 {
@@ -24,22 +21,65 @@ class WithdrawResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('payment_method_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('amount')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('status')
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Section::make('Payment Method Details')
+                            ->schema([
+                                Forms\Components\Grid::make(4)
+                                    ->schema([
+                                        Forms\Components\BelongsToSelect::make('user_id')
+                                            ->relationship('user', 'name')
+                                            ->label('User')
+                                            ->disabled()
+                                            ->columnSpan(1),
+                                        Forms\Components\TextInput::make('identifier')
+                                            ->label('Identifier')
+                                            ->disabled()
+                                            ->columnSpan(1),
+
+                                        Forms\Components\TextInput::make('amount')
+                                            ->label('Amount')
+                                            ->disabled()
+                                            ->columnSpan(1),
+
+                                        Forms\Components\BelongsToSelect::make('PaymentMethod')
+                                            ->relationship('paymentMethod', 'name')
+                                            ->label('Payment Method')
+                                            ->disabled()
+                                            ->columnSpan(1),
+                                    ]),
+                                ]),
+
+                            Forms\Components\Grid::make(2)
+                                ->schema([
+                                    Forms\Components\DateTimePicker::make('created_at')
+                                        ->label('Requested at')
+                                        ->disabled()
+                                        ->columnSpan(1),
+
+                                    Forms\Components\DateTimePicker::make('updated_at')
+                                        ->label('Last Update')
+                                        ->disabled()
+                                        ->columnSpan(1),
+                                ]),
+                    ])
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 2,
+                    ])
+                    ->columnSpan('full'),
+
+                Forms\Components\Radio::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'processing' => 'Processing',
+                        'paying' => 'Paying',
+                        'paid' => 'Paid',
+                        'regected' => 'Rejected',
+                    ])
                     ->required(),
                 Forms\Components\Textarea::make('notes')
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('identifier')
-                    ->maxLength(255)
-                    ->default(null),
             ]);
     }
 
@@ -47,37 +87,57 @@ class WithdrawResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\ImageColumn::make('paymentMethod.logo_url')
+                    ->label('')
+                    ->circular(),
+
+                Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('payment_method_id')
-                    ->numeric()
-                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('amount')
                     ->numeric()
+                    ->alignCenter(true)
+                    ->badge()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\IconColumn::make('status')
+                    ->icon(fn (string $state): string => match ($state) {
+                        'pending' => 'heroicon-o-clock',
+                        'processing' => 'heroicon-o-cog',
+                        'paying' => 'heroicon-o-arrow-path',
+                        'paid' => 'heroicon-o-check-badge',
+                        'regected' => 'heroicon-o-x-circle',
+                    })
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'warning',
+                        'processing' => 'primary',
+                        'paying' => 'info',
+                        'paid' => 'success',
+                        'regected' => 'danger',
+                    }),
+
                 Tables\Columns\TextColumn::make('identifier')
+                    ->color(fn ($record) => $record->identifier ? 'success' : 'danger')
+                    ->badge()
+                    ->getStateUsing(fn ($record) => $record->identifier ?? 'No Identifier')
                     ->searchable(),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Requested at')
+                    ->since()
+                    ->sortable(),
+
+
+                Tables\Columns\TextColumn::make('updated_at')
+                ->label('Last Update')
+                ->since()
+                ->sortable(),
             ])
             ->filters([
-                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 
@@ -100,8 +160,6 @@ class WithdrawResource extends Resource
     {
         return [
             'index' => Pages\ListWithdraws::route('/'),
-            'create' => Pages\CreateWithdraw::route('/create'),
-            'edit' => Pages\EditWithdraw::route('/{record}/edit'),
         ];
     }
 }

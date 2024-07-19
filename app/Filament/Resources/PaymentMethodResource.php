@@ -61,7 +61,6 @@ class PaymentMethodResource extends Resource
                                     ->required()
                                     ->disk('public_path')
                                     ->directory('images/payment_methods')
-                                    ->imageEditor()
                                     ->image()
                                     ->hint('Supported formats: jpg, png, gif. Maximum size: 2MB'),
                             ])
@@ -83,6 +82,10 @@ class PaymentMethodResource extends Resource
                 ImageColumn::make('logo_url')
                 ->label('')
                 ->circular(),
+
+                Tables\Columns\TextColumn::make('id')
+                ->searchable(),
+
 
 
                 Tables\Columns\TextColumn::make('name')
