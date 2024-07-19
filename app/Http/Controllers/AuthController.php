@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 
 
 class AuthController extends Controller
-{ 
+{
     use UploadImage;
 
     public function login(AuthRequest $request)
@@ -37,7 +37,6 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
-            'uuid' => Str::uuid(),
             'profile_picture' => $request->hasFile('profile_picture') ? $this->uploadImage($request->profile_picture,'images/avatars') : null
         ]);
 

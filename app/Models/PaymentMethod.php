@@ -12,9 +12,11 @@ class PaymentMethod extends Model
     protected $guarded = [];
 
 
-    public function getLogoAttribute($value)
+    public function getLogoUrlAttribute($value)
     {
-        return $value ? asset($value) : null;
+        return $this->logo
+            ? asset($this->logo)
+            : 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
 
     public function scopeActive($query)

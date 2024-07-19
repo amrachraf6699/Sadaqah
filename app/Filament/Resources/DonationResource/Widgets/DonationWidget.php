@@ -8,11 +8,12 @@ use Carbon\Carbon;
 
 class DonationWidget extends ChartWidget
 {
-    protected static ?string $heading = 'Donations Over Time';
+    protected static ?string $heading = 'Donations Last Week';
 
     protected function getData(): array
     {
         $data = Donation::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->where('created_at', '>=', Carbon::now()->subWeek())
             ->groupBy('date')
             ->orderBy('date', 'asc')
             ->get()

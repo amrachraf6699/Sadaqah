@@ -6,8 +6,10 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
+use COM;
 use Filament\Actions\ViewAction;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -30,9 +32,68 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                // Table
+                Forms\Components\Card::make()
+                    ->extraAttributes(['class' => 'bg-gray-50 p-6 rounded-lg shadow'])
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\Card::make('Personal Details')
+                                    ->extraAttributes(['class' => 'bg-red-50 p-4 rounded-lg'])
+                                    ->schema([
+                                        Forms\Components\TextInput::make('name')
+                                            ->required()
+                                            ->suffixIcon('heroicon-m-user')
+                                            ->autofocus(),
+
+                                        Forms\Components\Radio::make('is_admin')
+                                            ->label('Is Admin?')
+                                            ->boolean()
+                                            ->inline()
+                                            ->default(true),
+                                    ])
+                                    ->icon('heroicon-o-user')
+                                    ->collapsed(),
+                                Forms\Components\Card::make('Login Details')
+                                    ->extraAttributes(['class' => 'bg-blue-50 p-4 rounded-lg'])
+                                    ->schema([
+                                        Forms\Components\TextInput::make('email')
+                                            ->required()
+                                            ->email()
+                                            ->unique(User::class, 'email')
+                                            ->suffixIcon('heroicon-m-envelope'),
+
+                                        Forms\Components\TextInput::make('password')
+                                            ->required()
+                                            ->minLength(8)
+                                            ->password()
+                                            ->confirmed()
+                                            ->suffixIcon('heroicon-m-key')
+                                            ->autocomplete('new-password'),
+
+                                        Forms\Components\TextInput::make('password_confirmation')
+                                            ->required()
+                                            ->suffixIcon('heroicon-m-key')
+                                            ->autocomplete(false),
+                                    ])
+                                    ->icon('heroicon-o-lock-closed')
+                                    ->collapsed(),
+                            ]),
+                        Forms\Components\Card::make()
+                            ->extraAttributes(['class' => 'bg-yellow-50 p-4 rounded-lg'])
+                            ->schema([
+                                Forms\Components\FileUpload::make('profile_picture')
+                                    ->label('Profile Picture')
+                                    ->image()
+                                    ->required()
+                                    ->disk('public_path')
+                                    ->directory('images/avatars')
+                                    ->maxSize(2048)
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif']),
+                            ]),
+                    ]),
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
@@ -97,6 +158,8 @@ class UserResource extends Resource
                     ->label('View Profile')
                     ->url(fn (User $user) => route('profile.show', $user))
                     ->openUrlInNewTab(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make(),
             ]);
     }
 
@@ -112,7 +175,7 @@ class UserResource extends Resource
         return [
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            // 'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

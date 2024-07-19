@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use App\Models\User;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Components\Tab;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\Pages\ListRecords;
@@ -49,6 +50,15 @@ class ListUsers extends ListRecords
                 ->modifyQueryUsing(function (Builder $query) {
                     $query->where('balance', 0);
                 }),
+        ];
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            CreateAction::make()
+            ->label('Create new User')
+            ->icon('heroicon-o-plus-circle')
         ];
     }
 }

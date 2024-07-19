@@ -21,7 +21,7 @@ class PaymentMethodResource extends Resource
     protected static ?string $model = PaymentMethod::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
-    
+
     public static function form(Form $form): Form
     {
         return $form
@@ -59,7 +59,7 @@ class PaymentMethodResource extends Resource
                                     ->label('Upload Logo')
                                     ->acceptedFileTypes(['image/*'])
                                     ->required()
-                                    ->disk('public')
+                                    ->disk('public_path')
                                     ->directory('images/payment_methods')
                                     ->imageEditor()
                                     ->image()
@@ -80,13 +80,13 @@ class PaymentMethodResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('logo_url')
+                ->label('')
+                ->circular(),
+
+
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-
-                ImageColumn::make('logo')
-                    ->label('Logo')
-                    ->url(fn (PaymentMethod $record) => $record->logo)
-                    ->circular(),
 
                 ToggleColumn::make('is_active')
                 ->label('Active')

@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DonationResource\Pages;
 use App\Filament\Resources\DonationResource\RelationManagers;
+use App\Filament\Resources\DOnationResource\Widgets\DonationStats;
 use App\Filament\Resources\DonationResource\Widgets\DonationWidget;
 use App\Models\Donation;
 use Filament\Forms;
@@ -55,9 +56,9 @@ class DonationResource extends Resource
                     ->searchable(),
 
                 ImageColumn::make('campaign.image_url')
-                ->label('Campaign Image')
-                ->circular()
-                ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Campaign Image')
+                    ->circular()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('campaign.title')
                     ->searchable(),
@@ -66,12 +67,14 @@ class DonationResource extends Resource
                     ->badge(fn ($record) => $record->amount)
                     ->color(fn ($record) => $record->amount > 100 ? 'success' : 'danger')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('message')
                     ->color(fn ($record) => $record->message ? : 'danger')
                     ->badge(fn ($record) => $record->message ? : 'No message')
                     ->getStateUsing(fn ($record) => $record->message ?? 'No message')
+                    ->searchable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('created_at')
@@ -103,6 +106,7 @@ class DonationResource extends Resource
     {
         return [
             DonationWidget::class,
+            DonationStats::class,
         ];
     }
 

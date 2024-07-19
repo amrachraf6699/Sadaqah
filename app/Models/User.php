@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
+
 
 
 class User extends Authenticatable implements FilamentUser
@@ -26,7 +28,8 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'profile_picture',
-        'uuid'
+        'uuid',
+        'is_admin',
     ];
 
     /**
@@ -49,11 +52,25 @@ class User extends Authenticatable implements FilamentUser
         'password' => 'hashed',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->uuid = (string) Str::uuid();
+        });
+    }
+
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
     }
 
+
+    public function setUuidAttribute($value)
+    {
+        $this->attributes['uuid'] = Str::uuid();
+    }
 
     public function getProfilePictureUrlAttribute()
     {
